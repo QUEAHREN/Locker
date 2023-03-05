@@ -39,25 +39,20 @@
 						_self.isLogin = false;
 					}else{
 						_self.isLogin = true;
-						uni.getStorage({
-							key: "openid",
-							success:(ret) =>{
-								_self.openid = ret.data;
-								console.log(ret.data)
-								uni.request({
-									url: BASE_URL+"query/boxes?User_ID="+ret.data,
-									success: (res) => {
-										if(res.statusCode != 200){
-											_self.hasOrders = false;
-										}else{
-											_self.hasOrders = true;
-											_self.rents = res.data;
-										}
-									},
-								})
+						uni.request({
+							url: BASE_URL+"query/box?User_ID="+_self.username,
+							success: (res) => {
+								if (res.data == "Internal Server Error")
+									_self.hasOrders = false;
+								else{
+									_self.hasOrders = true;
+									_self.rents = res.data;
+								}
+							},
+							fail: () => {
+								_self.hasOrders = false;
 							}
 						})
-						
 					}
 				},
 				fail: function(res) {
@@ -68,6 +63,15 @@
 		onLoad() {
 			_self.rents = []
 			uni.getStorage({
+				key: 'username',
+				success: function (res) {
+					_self.username = res.data
+				},
+				fail: function(res) {
+					_self.isLogin = false;
+				}
+			})
+			uni.getStorage({
 				key: 'isLogin',
 				success: function (res) {
 					if(res.data != "true"){
@@ -75,10 +79,14 @@
 					}else{
 						_self.isLogin = true;
 						uni.request({
-							url: BASE_URL+"query/boxes?User_ID=",
+							url: BASE_URL+"query/box?User_ID="+_self.username,
 							success: (res) => {
-								_self.hasOrders = true;
-								_self.rents = res.data;
+								if (res.data == "Internal Server Error")
+									_self.hasOrders = false;
+								else{
+									_self.hasOrders = true;
+									_self.rents = res.data;
+								}
 							},
 							fail: () => {
 								_self.hasOrders = false;

@@ -44,7 +44,7 @@
 			login(){
 		    // 获取用户信息
 				// let base_url = "http://1.15.231.43:8080/"
-				const base_url = "http://layznana.xyz/"
+				const base_url = "https://layznana.xyz/"
 				uni.getUserProfile({
 					desc: "注册",
 					success: function (infoRes) {
@@ -52,38 +52,22 @@
 						_self.username = infoRes.userInfo.nickName;
 						_self.avatarUrl = infoRes.userInfo.avatarUrl;
 						_self.isLogin = true;
-					  _self.setStor("isLogin", "true");
+					    _self.setStor("isLogin", "true");
 						_self.setStor("username", _self.username);
 						_self.setStor("avatarUrl", _self.avatarUrl);
-						wx.login({
-							success: (res) => {  
-								if (res.code) {         //微信登录成功 已拿到code  
-									uni.request({  
-										url: base_url+'get_session?JSCODE='+res.code,  
-										method:'GET', 
-										success: (cts) => {  
-											// 换取成功后 暂存这些数据 留作后续操作  
-											// this.session_key=cts.data.session_key     //session_key  会话密钥 
-											_self.openid = cts.data.openid;
-											_self.setStor("openid", _self.openid);
-											uni.request({
-												url: base_url+'users',
-												method: "POST",
-												data: {
-													'User_Name': cts.data.openid,
-													'User_Password': ""
-												},
-												header: {
-																'content-type':'application/json' //自定义请求头信息
-														},
-														});
-											 
-										}});  
-								} else {  
-										console.log('登录失败！' + res.errMsg)  
-								}  
-								}  
-						})  
+						uni.request({
+								url: base_url+'users',
+								method: "POST",
+								data: {
+									'User_Name': _self.username,
+									'User_Password': ""
+								},
+								header: {
+												'content-type':'application/json' //自定义请求头信息
+										},
+										});
+							 
+						  
 					},
 					fail: function(){
 						console.log("fail");
