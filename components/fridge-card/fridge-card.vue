@@ -72,7 +72,7 @@
 			// }
 			rentOpen() {
 				uni.request({
-					url:BASE_URL+"rent/open?User_ID="+_self.username+"&Box_ID="+_self.boxId,
+					url:BASE_URL+"rent/open?User_ID="+_self.username,
 					success(res) {
 						if(res.statusCode != 200){
 							uni.showToast({
@@ -89,7 +89,7 @@
 			},
 			rentStop() {
 				uni.request({
-					url:BASE_URL+"rent/stop?User_ID="+_self.username+"&Box_ID="+_self.boxId,
+					url:BASE_URL+"rent/stop?User_ID="+_self.username,
 					success(res) {
 						if(res.statusCode != 200){
 							uni.showToast({
@@ -112,9 +112,9 @@
 		created() {
 			_self = this;
 			uni.getStorage({
-				key: 'openid',
+				key: 'username',
 				success: function (res) {
-					_self.openid = res.data
+					_self.username = res.data
 				  console.log(res.data);
 				},
 				fail: function(res) {

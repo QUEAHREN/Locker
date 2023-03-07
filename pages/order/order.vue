@@ -19,7 +19,7 @@
 		},
 		methods: {
 			async rentStart() {
-				let url = "rent/start?User_ID="+this.openid+"&Fridge_ID="+this.Fridge_ID;
+				let url = "rent/start?User_ID="+this.username+"&Fridge_ID="+this.Fridge_ID;
 				const res = await this.$myRequest({
 						url: url,
 						data: {}

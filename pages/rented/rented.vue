@@ -5,10 +5,7 @@
 			<image src="../../static/empty.png" class="empty"></image>
 		</view>
 		<view v-for="(item, index) in rents" class="cardbox" v-else>
-			<fridge-card
-			:fridgeId="item.Fridge_ID"
-			:boxId="item.Box_ID"
-			></fridge-card>
+			<fridge-card :fridgeId="item.Fridge_ID" :boxId="item.Box_ID"></fridge-card>
 		</view>
 	</view>
 </template>
@@ -26,7 +23,15 @@
 			}
 		},
 		methods: {
-			
+			setStor(key, data) {
+				uni.setStorage({
+					key: key,
+					data: data,
+					success: function() {
+						console.log('success');
+					}
+				});
+			},
 		},
 		created() {
 			_self = this;
@@ -34,19 +39,23 @@
 		onShow() {
 			uni.getStorage({
 				key: 'isLogin',
-				success: function (res) {
-					if(res.data != "true"){
+				success: function(res) {
+					if (res.data != "true") {
 						_self.isLogin = false;
-					}else{
+					} else {
+						_self.setStor("isLogin", "true");
 						_self.isLogin = true;
 						uni.request({
-							url: BASE_URL+"query/box?User_ID="+_self.username,
+							url: BASE_URL + "query/box?User_ID=" + _self.username,
 							success: (res) => {
-								if (res.data == "Internal Server Error")
-									_self.hasOrders = false;
-								else{
+								console.log(res.data)
+								console.log(res.data.length)
+								if (res.data.length != 0) {
 									_self.hasOrders = true;
 									_self.rents = res.data;
+								} 
+								else {
+									_self.hasOrders = false;
 								}
 							},
 							fail: () => {
@@ -59,12 +68,13 @@
 					_self.isLogin = false;
 				}
 			})
+			console.log(_self.isLogin)
 		},
 		onLoad() {
 			_self.rents = []
 			uni.getStorage({
 				key: 'username',
-				success: function (res) {
+				success: function(res) {
 					_self.username = res.data
 				},
 				fail: function(res) {
@@ -73,19 +83,23 @@
 			})
 			uni.getStorage({
 				key: 'isLogin',
-				success: function (res) {
-					if(res.data != "true"){
+				success: function(res) {
+					if (res.data != "true") {
 						_self.isLogin = false;
-					}else{
+					} else {
+						_self.setStor("isLogin", "true");
 						_self.isLogin = true;
 						uni.request({
-							url: BASE_URL+"query/box?User_ID="+_self.username,
+							url: BASE_URL + "query/box?User_ID=" + _self.username,
 							success: (res) => {
-								if (res.data == "Internal Server Error")
-									_self.hasOrders = false;
-								else{
+								console.log(res.data)
+								console.log(res.data.length)
+								if (res.data.length != 0) {
 									_self.hasOrders = true;
 									_self.rents = res.data;
+								} 
+								else {
+									_self.hasOrders = false;
 								}
 							},
 							fail: () => {
@@ -103,21 +117,23 @@
 </script>
 
 <style>
-.noorder{
-	font-size: 50rpx;
-	color: #B2B2B2;
-	margin-top: 50rpx;
-	display: flex;
-	align-items: center;
-	flex-direction: column;
-	justify-content: center;
-}
-.empty {
-	margin-top: 40rpx;
-	width: 200rpx;
-	height: 200rpx;
-}
-.cardbox{
-	margin-top: 20rpx;
-}
+	.noorder {
+		font-size: 50rpx;
+		color: #B2B2B2;
+		margin-top: 50rpx;
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.empty {
+		margin-top: 40rpx;
+		width: 200rpx;
+		height: 200rpx;
+	}
+
+	.cardbox {
+		margin-top: 20rpx;
+	}
 </style>

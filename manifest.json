@@ -1,6 +1,6 @@
 {
-    "name" : "myBox",
-    "appid" : "",
+    "name" : "myBox储物柜",
+    "appid" : "__UNI__DE690BC",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -50,7 +50,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wxbd7d894b68ff1550",
         "setting" : {
             "urlCheck" : false
         },
@@ -67,6 +67,5 @@
     },
     "uniStatistics" : {
         "enable" : false
-    },
-    "vueVersion" : "2"
+    }
 }
